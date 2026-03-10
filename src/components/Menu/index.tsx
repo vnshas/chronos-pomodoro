@@ -1,5 +1,5 @@
 
-import { HistoryIcon, HouseIcon, SettingsIcon, SunIcon,} from 'lucide-react'
+import { HistoryIcon, HouseIcon, MoonIcon, SettingsIcon, SunIcon,} from 'lucide-react'
 import styles from './style.module.css'
 import { useEffect, useState } from 'react'
 
@@ -13,6 +13,11 @@ export const Menu = () =>{
 
         return storageTheme
     })  
+
+    const NextThemeIcon = {
+        dark: <SunIcon />,
+        light: <MoonIcon />
+    }
     
     function handleTheme(event : React.MouseEvent<HTMLAnchorElement, MouseEvent>){
         event.preventDefault()
@@ -40,7 +45,7 @@ export const Menu = () =>{
                 <SettingsIcon />   
             </a>
             <a className={styles.menuLink} href="#" aria-label='Mudar Tema' title='Mudar' onClick={handleTheme}>
-                <SunIcon />   
+                {NextThemeIcon[theme]}
             </a>
         </nav>
     )
