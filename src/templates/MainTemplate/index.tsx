@@ -14,6 +14,7 @@ export const MainTemplate = ({children} : MainTemplateProps) => {
       <Container>
         <Logo />
       </Container>
+      
       <Container>
         <Menu />
       </Container>
