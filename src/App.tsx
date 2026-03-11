@@ -1,3 +1,5 @@
+
+import { TaskContextProvider } from "./contexts/TaskContext/TaskContextProvider";
 import { Home } from "./pages/Home";
 
 
@@ -8,6 +10,9 @@ import "./styles/theme.css";
 
 export const App = () => {
   return (
-    <Home/>
+    <TaskContextProvider>
+      <Home/>
+    </TaskContextProvider>
+    
   );
 };
