@@ -1,21 +1,37 @@
-import styles from './style.module.css'
+import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
+import { getNextCycle } from "../../utils/getNextCycle";
+import { getNextCycleType } from "../../utils/getNextCycleType";
+import styles from "./style.module.css";
 
+export const Cycles = () => {
+  const { state } = useTaskContext();
 
-export const Cycles = () =>{
-    return(
-        <div className={styles.cycles}>
-            <span>Ciclos</span>
+  const cycleStep = Array.from({ length: state.currentCycle });
 
-            <div className={styles.cycleDots}>
-                <span className={`${styles.cycleDot} ${styles.workTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.shortBreakTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.workTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.shortBreakTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.workTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.shortBreakTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.workTime}`}></span>
-                <span className={`${styles.cycleDot} ${styles.longBreakTime}`}></span>
-            </div>
-        </div>
-    )
-}
+   const cycleDescripitionMap = {
+    workTime:'foco',
+    shortBreakTime:'descanso curto',
+    longBreakTime:'descanso longo'
+   } 
+
+  return (
+    <div className={styles.cycles}>
+      <span>Ciclos</span>
+
+      <div className={styles.cycleDots}>
+        {cycleStep.map((_, index) => {
+          const nextCycle = getNextCycle(index);
+          const nextCycleType = getNextCycleType(nextCycle);
+          return (
+            <span
+              key={`${nextCycleType}_${nextCycle}`}  
+              className={`${styles.cycleDot} ${styles[nextCycleType]}`}
+              aria-label={`Indicador de ciclo de ${cycleDescripitionMap[nextCycleType]}`}
+              title={`Indicador de ciclo de ${cycleDescripitionMap[nextCycleType]}`}
+            ></span>
+          );
+        })}
+      </div>
+    </div>
+  );
+};

@@ -7,6 +7,7 @@ import type { TaskModel } from "../../models/TaskModel"
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext"
 import { getNextCycle } from "../../utils/getNextCycle"
 import { getNextCycleType } from "../../utils/getNextCycleType"
+import { formatSecondsTominutes } from "../../utils/formatSecondsToMinutes"
 
 export const MainForm = () =>{
   const {state,setState} = useTaskContext()
@@ -30,7 +31,7 @@ export const MainForm = () =>{
     const newTask : TaskModel = {
         id: Date.now.toString(),
         name: taskName,
-        duration: 1,
+        duration: state.config[nextCycleType],
         startDate: Date.now(),
         completeDate: null,
         interruptDate: null, 
@@ -46,35 +47,37 @@ export const MainForm = () =>{
         activeTask: newTask,
         currentCycle:nextCycle,
         secondsRemaining,
-        formattedSecondsRemaining: '00:00',
+        formattedSecondsRemaining: formatSecondsTominutes(secondsRemaining),
         tasks: [...prevState.tasks, newTask]
       }
     })
   }  
   
-  return(
-        <form onSubmit={ handleCreateNewTask} className="form" action="">
-          <div className="formRow">
-            <DefaultInput
-              labelText="task"
-              id="input"
-              type="text"
-              placeholder="Digite Algo"
-              ref={taskNameInput}
-            />
-          </div>
+  return (
+    <form onSubmit={handleCreateNewTask} className="form" action="">
+      <div className="formRow">
+        <DefaultInput
+          labelText="task"
+          id="input"
+          type="text"
+          placeholder="Digite Algo"
+          ref={taskNameInput}
+        />
+      </div>
 
-          <div className="formRow">
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
+      <div className="formRow">
+        <p>Lorem ipsum dolor sit amet.</p>
+      </div>
 
-          <div className="formRow">
-            <Cycles />
-          </div>
+      {state.currentCycle > 0 && (
+        <div className="formRow">
+          <Cycles />
+        </div>
+      )}
 
-          <div className="formRow">
-            <DefaultButton  icon={<PlayCircleIcon />}/>
-          </div>
-        </form>
-    )
+      <div className="formRow">
+        <DefaultButton icon={<PlayCircleIcon />} />
+      </div>
+    </form>
+  );
 }
