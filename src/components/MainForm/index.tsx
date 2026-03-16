@@ -53,6 +53,23 @@ export const MainForm = () =>{
     });
   }
 
+  function handleInterruptTask(){
+      setState((prevState) => {
+      return {
+        ...prevState,
+        activeTask: null,
+        secondsRemaining: 0,
+        formattedSecondsRemaining: '00:00',
+        tasks: prevState.tasks.map(task =>{
+          if(prevState.activeTask && prevState.activeTask.id === task.id){
+            return {...task, interruptDate: Date.now() }
+          }
+          return task
+        })
+      };
+    });
+  }
+
   return (
     <form onSubmit={handleCreateNewTask} className="form" action="">
       <div className="formRow">
@@ -83,6 +100,7 @@ export const MainForm = () =>{
             title="Iniciar nova tarefa"
             type="submit"
             icon={<PlayCircleIcon />}
+            key='bota_submit'
           />
         ) : (
           <DefaultButton
@@ -90,7 +108,9 @@ export const MainForm = () =>{
             title="Interromper tarefa"
             type="button"
             color="red"
+            onClick={handleInterruptTask}
             icon={<StopCircleIcon />}
+            key='botao_button'
           />
         )}
       </div>
